@@ -2,7 +2,7 @@
 import { RegisterType, registerSchema } from "@/libs/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ErrorField } from "./field-error";
+import { ErrorField } from "@/components/auth";
 export function RegisterForm() {
   const {
     register,

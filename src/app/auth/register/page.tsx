@@ -1,6 +1,4 @@
-import { AuthHeader } from "@/components/auth/header";
-import { AuthRedirect } from "@/components/auth/redirect";
-import { RegisterForm } from "@/components/auth/register-form";
+import { AuthHeader, RegisterForm, AuthRedirect } from "@/components/auth";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
