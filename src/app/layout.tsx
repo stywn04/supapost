@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 const font = Nunito_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={font.className}>{children}</body>
+      <body className={font.className}>
+        <Toaster position="bottom-right" toastOptions={{ duration: 2500 }} />
+        {children}
+      </body>
     </html>
   );
 }
