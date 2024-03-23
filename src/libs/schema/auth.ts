@@ -8,3 +8,10 @@ export const registerSchema = z.object({
 });
 
 export type RegisterType = z.infer<typeof registerSchema>;
+
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6, "Password must be at least 6 chars!"),
+});
+
+export type LoginType = z.infer<typeof loginSchema>;
