@@ -121,3 +121,31 @@ export async function commentAction(post_id: string, content: string) {
   }
   revalidatePath(`/post/${post_id}`);
 }
+
+export async function getAllPostCommentAction(post_id: string, page: number) {
+  const supabase = createClient();
+
+  const { count, error: countError } = await supabase
+    .from("comment")
+    .select("*", { count: "exact", head: true })
+    .eq("post_id", post_id);
+  if (countError) {
+    throw Error(countError.message);
+  }
+
+  const totalPages = Math.ceil((count ?? 0) / 5);
+  const from = (page - 1) * 5;
+  const to = from + 4;
+  const { data, error } = await supabase
+    .from("comment")
+    .select(`*,user(username,name,avatar)`)
+    .eq("post_id", post_id)
+    .range(from, to)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    throw Error(error.message);
+  }
+
+  return { totalPages, data };
+}
