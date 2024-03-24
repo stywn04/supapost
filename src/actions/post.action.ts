@@ -133,9 +133,9 @@ export async function getAllPostCommentAction(post_id: string, page: number) {
     throw Error(countError.message);
   }
 
-  const totalPages = Math.ceil((count ?? 0) / 5);
-  const from = (page - 1) * 5;
-  const to = from + 4;
+  const totalPages = Math.ceil((count ?? 0) / 8);
+  const from = (page - 1) * 8;
+  const to = from + 7;
   const { data, error } = await supabase
     .from("comment")
     .select(`*,user(username,name,avatar)`)
