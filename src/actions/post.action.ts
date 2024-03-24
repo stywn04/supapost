@@ -149,3 +149,25 @@ export async function getAllPostCommentAction(post_id: string, page: number) {
 
   return { totalPages, data };
 }
+
+export async function searchPostByQueryAction(query: string) {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("post")
+    .select(
+      `
+      *,
+      user(name,username,avatar),
+      like(id,user_id),
+      comment(content,user(name,username,avatar))
+    `
+    )
+    .textSearch("content", query)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    throw Error(error.message);
+  }
+
+  return data;
+}
