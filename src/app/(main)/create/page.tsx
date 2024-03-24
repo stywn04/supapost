@@ -1,3 +1,4 @@
+import { CreatePostForm } from "@/components/post/post-form";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,7 +8,10 @@ export const metadata: Metadata = {
 export default function CreatePage() {
   return (
     <main>
-      <h1>Create</h1>
+      <section className="mb-5">
+        <h1 className="font-semibold text-xl">Create your post</h1>
+      </section>
+      <CreatePostForm />
     </main>
   );
 }
