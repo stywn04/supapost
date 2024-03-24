@@ -7,6 +7,7 @@ import {
 } from "@/libs/schema/auth";
 import { createClient } from "@/libs/supabase/server";
 import { getUserByEmail, getUserByUsername } from "./user.action";
+import { redirect } from "next/navigation";
 
 export async function registerAction(fields: RegisterType) {
   const validatedFields = registerSchema.safeParse(fields);
@@ -66,4 +67,15 @@ export async function loginAction(fields: LoginType) {
   }
 
   return { isError: false, message: "Login Succes!" };
+}
+
+export async function logoutAction() {
+  const s = createClient();
+  const { error } = await s.auth.signOut();
+
+  if (error) {
+    throw Error(error.message);
+  }
+
+  redirect("/auth/login");
 }
