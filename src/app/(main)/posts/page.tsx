@@ -15,7 +15,7 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
   const page = searchParams.page ?? 1;
   return (
     <main>
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<Loading />} key={page}>
         <GetPosts page={Number(page)} />
       </Suspense>
     </main>
