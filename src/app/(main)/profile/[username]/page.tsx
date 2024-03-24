@@ -1,5 +1,5 @@
-import { getUserByUsername } from "@/actions/user.action";
-import type { Metadata } from "next";
+import { getCurrentUser, getUserByUsername } from "@/actions/user.action";
+import { UpdateProfileButton } from "@/components/auth";
 import { redirect } from "next/navigation";
 
 export async function generateMetadata({ params }: ProfilePageProps) {
@@ -18,6 +18,7 @@ interface ProfilePageProps {
 export default async function SearchPage({ params }: ProfilePageProps) {
   const { username } = params;
   const user = await getUserByUsername(username);
+  const { id } = await getCurrentUser();
   if (!user) redirect("/auth/login");
   return (
     <main>
@@ -39,6 +40,14 @@ export default async function SearchPage({ params }: ProfilePageProps) {
           </div>
         </div>
       </section>
+      {id === user?.id ? (
+        <UpdateProfileButton
+          avatar={user.avatar}
+          username={user.username}
+          bio={user.bio}
+          name={user.name}
+        />
+      ) : null}
     </main>
   );
 }
