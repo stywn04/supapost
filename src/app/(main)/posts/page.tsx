@@ -1,13 +1,23 @@
+import { GetPosts } from "@/components/getPosts";
+import { Loading } from "@/components/loading";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Posts",
 };
 
-export default function PostsPage() {
+interface PostsPageProps {
+  searchParams: { page: number | undefined };
+}
+
+export default async function PostsPage({ searchParams }: PostsPageProps) {
+  const page = searchParams.page ?? 1;
   return (
     <main>
-      <h1>Posts</h1>
+      <Suspense fallback={<Loading />}>
+        <GetPosts page={Number(page)} />
+      </Suspense>
     </main>
   );
 }
