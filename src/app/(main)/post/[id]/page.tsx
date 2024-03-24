@@ -2,7 +2,7 @@ import { getPostByIdAction } from "@/actions/post.action";
 import { PostUser, PostCount, PostActivity, PostDate } from "@/components/post";
 import { getCurrentUser } from "@/actions/user.action";
 import { CommentForm } from "@/components/comment";
-import { Loading } from "@/components/loading";
+import { LoadingSkeleton } from "@/components/loading";
 import { Suspense } from "react";
 import { Comments } from "@/components/comments";
 
@@ -58,7 +58,7 @@ export default async function PostPage({
         <CommentForm post_id={post.id} />
       </div>
       <div>
-        <Suspense key={page} fallback={<Loading />}>
+        <Suspense key={page} fallback={<LoadingSkeleton />}>
           <Comments id={id} page={Number(page)} />
         </Suspense>
       </div>

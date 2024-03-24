@@ -1,5 +1,5 @@
 import { GetPosts } from "@/components/getPosts";
-import { Loading } from "@/components/loading";
+import { LoadingSkeleton } from "@/components/loading";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -15,7 +15,7 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
   const page = searchParams.page ?? 1;
   return (
     <main>
-      <Suspense fallback={<Loading />} key={page}>
+      <Suspense fallback={<LoadingSkeleton />} key={page}>
         <GetPosts page={Number(page)} />
       </Suspense>
     </main>
