@@ -7,14 +7,14 @@ export async function uploadImage(image: File) {
   const s = createClient();
   const { error } = await s.storage
     .from("supapost")
-    .upload(image.name, image, { upsert: true });
+    .upload(`/images/${image.name}`, image, { upsert: true });
 
   if (error) {
     throw Error(error.message);
   }
   const {
     data: { publicUrl },
-  } = s.storage.from("supapost").getPublicUrl(`/post/${image.name}`);
+  } = s.storage.from("supapost").getPublicUrl(`/images/${image.name}`);
 
   return publicUrl;
 }
