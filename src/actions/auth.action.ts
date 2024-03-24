@@ -30,7 +30,10 @@ export async function registerAction(fields: RegisterType) {
     return { isError: true, message: "Email already registered!" };
   }
 
-  const { error } = await s.auth.signUp({
+  const {
+    error,
+    data: { user },
+  } = await s.auth.signUp({
     email,
     password,
     options: {
@@ -48,7 +51,11 @@ export async function registerAction(fields: RegisterType) {
     return { isError: true, message: error.message };
   }
 
-  return { isError: false, message: "Account successfully registered!" };
+  return {
+    isError: false,
+    message: "Account successfully registered!",
+    redirectTo: `/profile/${user?.user_metadata.username}`,
+  };
 }
 
 export async function loginAction(fields: LoginType) {

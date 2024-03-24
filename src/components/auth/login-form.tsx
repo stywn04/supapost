@@ -8,7 +8,7 @@ import { loginAction } from "@/actions/auth.action";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { SubmitLoading } from "../submit-loading";
-export function LoginForm() {
+export function LoginForm({ redirectTo }: { redirectTo: string }) {
   const {
     register,
     handleSubmit,
@@ -30,7 +30,7 @@ export function LoginForm() {
       toast.success(status.message);
       reset();
 
-      router.push("/");
+      router.push(redirectTo);
     });
   }
   return (

@@ -29,7 +29,7 @@ export function RegisterForm() {
 
       toast.success(status.message);
       reset();
-      router.push("/");
+      router.push(status.redirectTo ?? "/posts");
     });
   }
   return (
