@@ -102,3 +102,22 @@ export async function likePostAction({
 
   revalidatePath(pathname);
 }
+
+export async function commentAction(post_id: string, content: string) {
+  const supabase = createClient();
+  const { id } = await getCurrentUser();
+
+  if (content.length < 1) {
+    return { isError: true, message: "Cannot submit empty comment" };
+  }
+
+  const { error } = await supabase.from("comment").insert({
+    content,
+    post_id,
+    user_id: id,
+  });
+  if (error) {
+    return { isError: true, message: error.message };
+  }
+  revalidatePath(`/post/${post_id}`);
+}

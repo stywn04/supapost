@@ -1,6 +1,7 @@
 import { getPostByIdAction } from "@/actions/post.action";
 import { PostUser, PostCount, PostActivity, PostDate } from "@/components/post";
 import { getCurrentUser } from "@/actions/user.action";
+import { CommentForm } from "@/components/comment";
 
 export async function generateMetadata({ params }: PostPageProps) {
   const { id } = params;
@@ -49,6 +50,9 @@ export default async function PostPage({
           <PostCount like={post.like.length} comment={post.comment.length} />
           <PostDate created_at={post.created_at} />
         </section>
+      </div>
+      <div className="border-b-[1px] border-zinc-900 p-5">
+        <CommentForm post_id={post.id} />
       </div>
     </main>
   );
