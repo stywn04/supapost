@@ -1,7 +1,11 @@
 "use client";
 
+import { submitPostAction } from "@/actions/post.action";
+import { uploadImage } from "@/libs/upload-image";
 import { Camera, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
+import { SubmitLoading } from "../submit-loading";
 import toast from "react-hot-toast";
 
 export function CreatePostForm() {
@@ -9,6 +13,7 @@ export function CreatePostForm() {
   const [isPending, setTransition] = useTransition();
   const fileRef = useRef<HTMLInputElement | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
+  const router = useRouter();
 
   function imagePickHandler(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files?.length) {
@@ -24,8 +29,28 @@ export function CreatePostForm() {
         const content = String(formData.get("content"));
         if (content.length < 1) throw Error("Can't submit empty content!");
 
+        if (!imagePick) {
+          const status = await submitPostAction(content, imagePick);
+          if (status.isError) {
+            throw Error(status.message);
+          }
+          formRef.current?.reset();
+          setImagePick(null);
+          toast.success(status.message);
+          router.push("/posts");
+          return;
+        }
+
+        const image = await uploadImage(imagePick);
+        const status = await submitPostAction(content, image);
+        if (status.isError) {
+          throw Error(status.message);
+        }
+
+        toast.success(status.message);
         formRef.current?.reset();
         setImagePick(null);
+        router.push("/posts");
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
       }
@@ -34,7 +59,7 @@ export function CreatePostForm() {
 
   return (
     <form onSubmit={submitHandler} ref={formRef}>
-      <fieldset className="flex flex-col gap-3">
+      <fieldset disabled={isPending} className="flex flex-col gap-3">
         <label htmlFor="content" hidden>
           Content
         </label>
@@ -44,7 +69,7 @@ export function CreatePostForm() {
           placeholder="share your thoughts"
           className="w-full h-40 resize-none p-4 rounded-md bg-transparent border border-zinc-900"
         />
-        <div className="flex flex-col gap-2">
+        <div className=" gap-2">
           {imagePick && (
             <div className="w-6/12 relative">
               <img
@@ -53,6 +78,7 @@ export function CreatePostForm() {
                 className="w-full h-full object-cover rounded-md"
               />
               <button
+                disabled={isPending}
                 type="button"
                 onClick={() => {
                   setImagePick(null);
@@ -65,6 +91,8 @@ export function CreatePostForm() {
           )}
           <input type="file" hidden ref={fileRef} onChange={imagePickHandler} />
           <button
+            className="inline"
+            disabled={isPending}
             type="button"
             onClick={() => {
               fileRef.current?.click();
@@ -81,7 +109,7 @@ export function CreatePostForm() {
             type="submit"
             className="bg-transparent py-2 px-6 rounded-md border border-zinc-700 "
           >
-            Submit
+            {isPending ? <SubmitLoading /> : "Submit"}
           </button>
         </div>
       </fieldset>
