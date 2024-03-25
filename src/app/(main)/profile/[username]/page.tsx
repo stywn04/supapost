@@ -1,6 +1,9 @@
 import { getCurrentUser, getUserByUsername } from "@/actions/user.action";
 import { UpdateProfileButton } from "@/components/auth";
+import { LoadingSkeleton } from "@/components/loading";
+import { UserPosts } from "@/components/user-posts";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export async function generateMetadata({ params }: ProfilePageProps) {
   const { username } = params;
@@ -13,9 +16,14 @@ export async function generateMetadata({ params }: ProfilePageProps) {
 
 interface ProfilePageProps {
   params: { username: string };
+  searchParams: { page: number | undefined };
 }
 
-export default async function SearchPage({ params }: ProfilePageProps) {
+export default async function SearchPage({
+  params,
+  searchParams,
+}: ProfilePageProps) {
+  const page = searchParams.page ?? 1;
   const { username } = params;
   const user = await getUserByUsername(username);
   const { id } = await getCurrentUser();
@@ -48,6 +56,14 @@ export default async function SearchPage({ params }: ProfilePageProps) {
           name={user.name}
         />
       ) : null}
+
+      <Suspense key={page} fallback={<LoadingSkeleton />}>
+        <UserPosts
+          page={Number(page)}
+          user_id={user.id}
+          username={user.username}
+        />
+      </Suspense>
     </main>
   );
 }

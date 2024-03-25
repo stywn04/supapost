@@ -171,3 +171,37 @@ export async function searchPostByQueryAction(query: string) {
 
   return data;
 }
+
+export async function getUserPosts(user_id: string, page: number) {
+  const supabase = createClient();
+  const { count, error: countError } = await supabase
+    .from("post")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", user_id);
+
+  if (countError) {
+    throw Error(countError.message);
+  }
+  const totalPages = Math.ceil((count ?? 0) / 8);
+  const from = (page - 1) * 8;
+  const to = from + 7;
+
+  const { data, error } = await supabase
+    .from("post")
+    .select(
+      `
+    *,
+    user(name,username,avatar),
+    like(id,user_id),
+    comment(content,user(name,username,avatar))
+  `
+    )
+    .eq("user_id", user_id)
+    .range(from, to)
+    .order("created_at", { ascending: false });
+
+  if (!data) {
+    throw error.message;
+  }
+  return { totalPages, data };
+}
