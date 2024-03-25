@@ -81,11 +81,11 @@ function ModalEditPost({ post_id, content, closeModal }: ModalEditPostProps) {
   return (
     <div
       onClick={closeModal}
-      className="fixed inset-0 z-50 min-h-screen bg-zinc-950/80 backdrop-blur-lg  flex items-center justify-center "
+      className="fixed inset-0 z-50 min-h-screen bg-zinc-950/80 backdrop-blur-lg  flex items-center justify-center text-white"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-10/12 md:w-8/12 lg:w-5/12 bg-zinc-950 p-5 rounded-md border border-zinc-900"
+        className="w-10/12 md:w-8/12 lg:w-5/12 bg-zinc-950 p-5 rounded-md border border-zinc-900 animate-in"
       >
         <section className="flex items-center justify-between">
           <h1 className="font-semibold text-xl">Edit Post</h1>
