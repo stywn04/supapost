@@ -1,6 +1,5 @@
 "use client";
-import { Edit, MessageSquare, Trash } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { Edit, Trash } from "lucide-react";
 import { LikePost } from "./like";
 import { CommentPost } from "./comment";
 
@@ -16,23 +15,25 @@ export function PostActivity({
   user_id,
   like,
 }: PostActivityProps) {
-  const pathname = usePathname();
-  const router = useRouter();
   const isAllowed = user_id === current_user_id;
   return (
-    <div className="flex items-center gap-2 text-zinc-300">
+    <div className="flex items-center gap-3 text-zinc-500">
       <LikePost
         post_id={post_id}
         current_user_id={current_user_id}
         like={like}
       />
       <CommentPost post_id={post_id} />
-      <button>
-        <Edit />
-      </button>
-      <button>
-        <Trash />
-      </button>
+      {isAllowed && (
+        <>
+          <button>
+            <Edit />
+          </button>
+          <button>
+            <Trash />
+          </button>
+        </>
+      )}
     </div>
   );
 }

@@ -47,7 +47,7 @@ export default async function PostPage({
             ) : null}
             <p>{post.content}</p>
           </div>
-          <PostActivity user_id={user_id} post_id={post.id} like={post.like} />
+          <PostActivity current_user_id={user_id} user_id={post.user_id} post_id={post.id} like={post.like} />
         </section>
         <section className="flex items-center justify-between text-sm text-zinc-700 ">
           <PostCount like={post.like.length} comment={post.comment.length} />
