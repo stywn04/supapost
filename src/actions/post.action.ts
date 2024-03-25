@@ -4,6 +4,7 @@ import { createClient } from "@/libs/supabase/server";
 import { getCurrentUser } from "./user.action";
 import { revalidatePath } from "next/cache";
 import { notFound } from "next/navigation";
+import { postSchema, postType } from "@/libs/schema/post";
 
 export async function submitPostAction(content: string, image: string | null) {
   const { id } = await getCurrentUser();
@@ -42,7 +43,7 @@ export async function getAllPostsAction(page: number) {
     user(name,username,avatar),
     like(id,user_id),
     comment(content,user(name,username,avatar))
-  `
+  `,
     )
     .range(from, to)
     .order("created_at", { ascending: false });
@@ -62,7 +63,7 @@ export async function getPostByIdAction(id: string) {
       user(name,username,avatar),
       like(id,user_id),
       comment(content,user(name,username,avatar))
-    `
+    `,
     )
     .eq("id", id)
     .limit(1)
@@ -160,7 +161,7 @@ export async function searchPostByQueryAction(query: string) {
       user(name,username,avatar),
       like(id,user_id),
       comment(content,user(name,username,avatar))
-    `
+    `,
     )
     .textSearch("content", query)
     .order("created_at", { ascending: false });
@@ -194,7 +195,7 @@ export async function getUserPosts(user_id: string, page: number) {
     user(name,username,avatar),
     like(id,user_id),
     comment(content,user(name,username,avatar))
-  `
+  `,
     )
     .eq("user_id", user_id)
     .range(from, to)
@@ -204,4 +205,28 @@ export async function getUserPosts(user_id: string, page: number) {
     throw error.message;
   }
   return { totalPages, data };
+}
+
+export async function editPostAction(
+  field: postType,
+  post_id: string,
+  pathname: string,
+) {
+  const validatedField = postSchema.safeParse(field);
+  if (!validatedField.success) {
+    return { error: true, message: "Invalid field!" };
+  }
+  const { content } = validatedField.data;
+  const supabase = createClient();
+  const { error } = await supabase
+    .from("post")
+    .update({ content })
+    .eq("id", post_id);
+
+  if (error) {
+    return { error: true, message: error.message };
+  }
+
+  revalidatePath(pathname);
+  return { error: false, message: "Edited successfully!" };
 }

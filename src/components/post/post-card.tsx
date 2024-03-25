@@ -29,6 +29,7 @@ export async function PostCard({ post }: { post: PostType }) {
           user_id={post.user_id}
           post_id={post.id}
           like={post.like}
+          content={post.content}
         />
       </section>
       <section className="flex items-center justify-between text-sm text-zinc-700 ml-5">
