@@ -3,6 +3,7 @@ import { Trash } from "lucide-react";
 import { LikePost } from "./like";
 import { CommentPost } from "./comment";
 import { EditPost } from "./edit";
+import { DeletePost } from "./delete";
 
 interface PostActivityProps {
   post_id: string;
@@ -30,9 +31,7 @@ export function PostActivity({
       {isAllowed && (
         <>
           <EditPost content={content} post_id={post_id} />
-          <button>
-            <Trash />
-          </button>
+          <DeletePost post_id={post_id} />
         </>
       )}
     </div>

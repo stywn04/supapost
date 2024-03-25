@@ -228,5 +228,20 @@ export async function editPostAction(
   }
 
   revalidatePath(pathname);
-  return { error: false, message: "Edited successfully!" };
+  return { error: false, message: "Post edited!" };
+}
+
+export async function deletePostAction(post_id: string, pathname: string) {
+  const supabase = createClient();
+
+  const { error } = await supabase.from("post").delete().eq("id", post_id);
+  if (error) {
+    return { isError: true, message: error.message };
+  }
+
+  if (!pathname.startsWith("/post/")) {
+    console.log("triggs!");
+    revalidatePath(pathname);
+  }
+  return { error: false, message: "Post deleted!" };
 }
