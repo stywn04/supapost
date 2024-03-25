@@ -28,6 +28,7 @@ export default async function SearchPage({
   const user = await getUserByUsername(username);
   const { id } = await getCurrentUser();
   if (!user) redirect("/auth/login");
+  const isCurrentUser = id === user.id;
   return (
     <main>
       <section className="grid grid-cols-12 gap-4 justify-between items-start">
@@ -48,14 +49,16 @@ export default async function SearchPage({
           </div>
         </div>
       </section>
-      {id === user?.id ? (
+      {isCurrentUser ? (
         <UpdateProfileButton
           avatar={user.avatar}
           username={user.username}
           bio={user.bio}
           name={user.name}
         />
-      ) : null}
+      ) : (
+        <div className="w-full h-[1px] bg-zinc-900 mt-10" />
+      )}
 
       <Suspense key={page} fallback={<LoadingSkeleton />}>
         <UserPosts
