@@ -2,6 +2,7 @@
 import { Edit, MessageSquare, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { LikePost } from "./like";
+import { CommentPost } from "./comment";
 
 interface PostActivityProps {
   post_id: string;
@@ -17,6 +18,7 @@ export function PostActivity({
 }: PostActivityProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const isAllowed = user_id === current_user_id;
   return (
     <div className="flex items-center gap-2 text-zinc-300">
       <LikePost
@@ -24,13 +26,7 @@ export function PostActivity({
         current_user_id={current_user_id}
         like={like}
       />
-      <button
-        onClick={() => {
-          router.push(`/post/${post_id}`);
-        }}
-      >
-        <MessageSquare />
-      </button>
+      <CommentPost post_id={post_id} />
       <button>
         <Edit />
       </button>
