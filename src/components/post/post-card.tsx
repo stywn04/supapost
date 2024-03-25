@@ -24,7 +24,12 @@ export async function PostCard({ post }: { post: PostType }) {
           image={post.image}
           content={post.content}
         />
-        <PostActivity user_id={id} post_id={post.id} like={post.like} />
+        <PostActivity
+          current_user_id={id}
+          user_id={post.user_id}
+          post_id={post.id}
+          like={post.like}
+        />
       </section>
       <section className="flex items-center justify-between text-sm text-zinc-700 ml-5">
         <PostCount like={post.like.length} comment={post.comment.length} />

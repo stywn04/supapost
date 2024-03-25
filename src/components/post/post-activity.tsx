@@ -1,43 +1,41 @@
 "use client";
-import { Heart, MessageSquare } from "lucide-react";
-import { useTransition } from "react";
-import { SubmitLoading } from "../submit-loading";
+import { Edit, MessageSquare, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { likePostAction } from "@/actions/post.action";
+import { LikePost } from "./like";
 
 interface PostActivityProps {
   post_id: string;
   user_id: string;
+  current_user_id: string;
   like: { id: string; user_id: string }[];
 }
-export function PostActivity({ post_id, user_id, like }: PostActivityProps) {
-  const [isPending, setTransition] = useTransition();
+export function PostActivity({
+  current_user_id,
+  post_id,
+  user_id,
+  like,
+}: PostActivityProps) {
   const pathname = usePathname();
   const router = useRouter();
-  async function likeHandler() {
-    setTransition(async () => {
-      await likePostAction({ post_id, like, pathname });
-    });
-  }
   return (
-    <div className="flex items-center gap-2">
-      {isPending ? (
-        <SubmitLoading />
-      ) : (
-        <button disabled={isPending} onClick={likeHandler}>
-          {like.find((l) => l.user_id === user_id) ? (
-            <Heart fill="red" color="red" />
-          ) : (
-            <Heart />
-          )}
-        </button>
-      )}
+    <div className="flex items-center gap-2 text-zinc-300">
+      <LikePost
+        post_id={post_id}
+        current_user_id={current_user_id}
+        like={like}
+      />
       <button
         onClick={() => {
           router.push(`/post/${post_id}`);
         }}
       >
         <MessageSquare />
+      </button>
+      <button>
+        <Edit />
+      </button>
+      <button>
+        <Trash />
       </button>
     </div>
   );
