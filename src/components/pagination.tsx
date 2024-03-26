@@ -24,7 +24,7 @@ export function Pagination({ page, totalPages }: PaginationProps) {
   }
 
   return totalPages > 1 ? (
-    <section className="pt-8 flex items-center justify-between">
+    <section className="text-sm md:text-base pt-8 flex items-center justify-between">
       <button
         onClick={prevHandler}
         disabled={page <= 1}

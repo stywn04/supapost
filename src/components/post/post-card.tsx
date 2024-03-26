@@ -35,7 +35,7 @@ export async function PostCard({ post }: { post: PostType }) {
           content={post.content}
         />
       </section>
-      <section className="flex items-center justify-between text-sm text-zinc-700 ml-5">
+      <section className="flex items-center justify-between text-xs  md:text-sm text-zinc-700 ml-5">
         <PostCount like={post.like.length} comment={post.comment.length} />
         <PostDate created_at={post.created_at} />
       </section>
