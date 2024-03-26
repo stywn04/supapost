@@ -13,7 +13,9 @@ export default async function Layout({
     <div className="min-h-screen bg-zinc-950 text-white">
       <Navbar />
       <NavbarLinkMobile username={username} />
-      <div className="max-w-xl mx-auto py-28">{children}</div>
+      <div className="max-w-xl mx-auto px-5 md:px-0 py-20 md:py-28">
+        {children}
+      </div>
     </div>
   );
 }

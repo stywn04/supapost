@@ -36,7 +36,7 @@ export function Pagination({ page, totalPages }: PaginationProps) {
         </span>
       </button>
       <div>
-        <p className="text-slate-700 tracking-wide">
+        <p className="text-zinc-700 tracking-wide">
           page <span className="text-zinc-200 ">{page}</span> of{" "}
           <span className="text-zinc-200">{totalPages}</span>
         </p>

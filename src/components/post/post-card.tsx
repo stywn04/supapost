@@ -10,7 +10,10 @@ import {
 export async function PostCard({ post }: { post: PostType }) {
   const { id } = await getCurrentUser();
   return (
-    <div key={post.id} className="p-5 border-b-[1px] border-zinc-900">
+    <div
+      key={post.id}
+      className="py-5 px-1 md:px-5 border-b-[1px] border-zinc-900"
+    >
       <section className="flex items-start justify-between ">
         <PostUser
           avatar={post.user?.avatar as string}
