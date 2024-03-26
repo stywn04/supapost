@@ -18,9 +18,8 @@ export function NavbarLink({ username }: { username: string }) {
       <Link
         key={link.href}
         href={link.href}
-        className={`py-2 px-8 rounded-md hover:bg-white/5 ${
-          active ? "text-zinc-200" : "text-zinc-700"
-        }`}
+        className={`py-2 md:px-8 flex items-center justify-center rounded-md hover:bg-white/5 text-center ${active ? "text-zinc-200" : "text-zinc-700"
+          }`}
       >
         {link.icon}
       </Link>
