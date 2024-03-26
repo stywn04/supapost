@@ -22,14 +22,14 @@ export function Pagination({ page, totalPages }: PaginationProps) {
 
     router.push(`${pathname}?page=${page + 1}`);
   }
+
   return totalPages > 1 ? (
     <section className="pt-8 flex items-center justify-between">
       <button
         onClick={prevHandler}
         disabled={page <= 1}
-        className={`py-1 px-4 rounded-md bg-transparent border border-zinc-900 ${
-          page <= 1 ? "text-zinc-700" : "text-zinc-200"
-        }`}
+        className={`py-1 px-4 rounded-md bg-transparent border border-zinc-900 ${page <= 1 ? "text-zinc-700" : "text-zinc-200"
+          }`}
       >
         <span className="flex items-center gap-1">
           <ChevronLeft size={18} /> Prev
@@ -44,9 +44,8 @@ export function Pagination({ page, totalPages }: PaginationProps) {
       <button
         onClick={nextHandler}
         disabled={page >= totalPages}
-        className={`py-1 px-4 rounded-md bg-transparent border border-zinc-900 ${
-          page >= totalPages ? "text-zinc-700" : "text-zinc-200"
-        }`}
+        className={`py-1 px-4 rounded-md bg-transparent border border-zinc-900 ${page >= totalPages ? "text-zinc-700" : "text-zinc-200"
+          }`}
       >
         <span className="flex items-center gap-1">
           Next <ChevronRight size={18} />

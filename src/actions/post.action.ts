@@ -3,7 +3,7 @@
 import { createClient } from "@/libs/supabase/server";
 import { getCurrentUser } from "./user.action";
 import { revalidatePath } from "next/cache";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { postSchema, postType } from "@/libs/schema/post";
 
 export async function submitPostAction(content: string, image: string | null) {
@@ -50,6 +50,12 @@ export async function getAllPostsAction(page: number) {
 
   if (!data) {
     throw error.message;
+  }
+  if (data.length < 1 && page !== 1) {
+    if (page === 2) {
+      redirect(`/posts`);
+    }
+    redirect(`/posts?page=${page - 1}`);
   }
   return { totalPages, data };
 }
@@ -174,6 +180,7 @@ export async function searchPostByQueryAction(query: string) {
 }
 
 export async function getUserPosts(user_id: string, page: number) {
+  const { username } = await getCurrentUser();
   const supabase = createClient();
   const { count, error: countError } = await supabase
     .from("post")
@@ -203,6 +210,13 @@ export async function getUserPosts(user_id: string, page: number) {
 
   if (!data) {
     throw error.message;
+  }
+  // only for current loged in user
+  if (data.length < 1 && page !== 1) {
+    if (page === 2) {
+      redirect(`/profile/${username}`);
+    }
+    redirect(`/profile/${username}?page=${page - 1}`);
   }
   return { totalPages, data };
 }
