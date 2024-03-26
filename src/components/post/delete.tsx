@@ -2,8 +2,8 @@ import { deletePostAction } from "@/actions/post.action";
 import { Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { SubmitLoading } from "../submit-loading";
 import toast from "react-hot-toast";
+import { SubmitLoading } from "../submit-loading";
 
 export function DeletePost({ post_id }: { post_id: string }) {
   const [open, setOpen] = useState(false);
