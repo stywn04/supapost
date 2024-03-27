@@ -7,13 +7,16 @@ import { redirect } from "next/navigation";
 
 export async function getUserByUsername(username: string) {
   const s = createClient();
-  const { data: user } = await s
+  const { error, data: user } = await s
     .from("user")
     .select("*")
     .eq("username", username)
     .limit(1)
     .single();
 
+  if (error) {
+    throw Error(error.message);
+  }
   return user;
 }
 
