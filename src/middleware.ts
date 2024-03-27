@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   if (pathname === "/") {
     return user
       ? NextResponse.redirect(new URL("/posts", request.nextUrl))
-      : NextResponse.redirect(new URL("/auth/login", request.nextUrl));
+      : response;
   }
 
   if (pathname.startsWith("/auth") && user) {
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
 
   if (!pathname.startsWith("/auth") && !user) {
     return NextResponse.redirect(
-      new URL(`/auth/login?redirectTo=${pathname}`, request.nextUrl)
+      new URL(`/auth/login?redirectTo=${pathname}`, request.nextUrl),
     );
   }
 

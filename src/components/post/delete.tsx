@@ -24,7 +24,6 @@ export function DeletePost({ post_id }: { post_id: string }) {
       <button
         onClick={() => {
           setOpen(true);
-          console.log(pathname);
         }}
       >
         <Trash />
