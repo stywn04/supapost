@@ -255,6 +255,7 @@ export async function deletePostAction(post_id: string, pathname: string) {
 
   if (!pathname.startsWith("/post/")) {
     revalidatePath(pathname);
+    return;
   }
-  return { error: false, message: "Post deleted!" };
+  redirect("/posts");
 }

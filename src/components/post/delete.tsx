@@ -1,12 +1,13 @@
 import { deletePostAction } from "@/actions/post.action";
 import { Trash } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { SubmitLoading } from "../submit-loading";
 
 export function DeletePost({ post_id }: { post_id: string }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   function closeModal() {
     setOpen(false);
@@ -23,6 +24,7 @@ export function DeletePost({ post_id }: { post_id: string }) {
       <button
         onClick={() => {
           setOpen(true);
+          console.log(pathname);
         }}
       >
         <Trash />
@@ -40,22 +42,15 @@ interface ModalDeletePostProps {
 function ModalDeletePost({ post_id, closeModal }: ModalDeletePostProps) {
   const [isPending, setTransition] = useTransition();
   const pathname = usePathname();
-  const router = useRouter();
   async function deleteHandler() {
     setTransition(async () => {
       try {
         const status = await deletePostAction(post_id, pathname);
-        if (status.isError) {
+        if (status?.isError) {
           throw Error(status.message);
         }
-
-        toast.success(status.message);
-
+        toast.success("Post deleted!");
         closeModal();
-        if (pathname.startsWith("/post/")) {
-          router.back();
-          router.refresh();
-        }
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
       }
