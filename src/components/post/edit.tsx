@@ -93,7 +93,7 @@ function ModalEditPost({ post_id, content, closeModal }: ModalEditPostProps) {
             <X />
           </button>
         </section>
-        <form onSubmit={handleSubmit(editPostHandler)} className="mt-5 mb-2">
+        <form onSubmit={handleSubmit(editPostHandler)} className="mt-5 ">
           <fieldset disabled={isPending}>
             <textarea
               className="w-full h-32 p-4 resize-none rounded bg-transparent border border-zinc-900 "
@@ -101,7 +101,7 @@ function ModalEditPost({ post_id, content, closeModal }: ModalEditPostProps) {
             />
             <ErrorField error={errors.content} />
             <div className="flex justify-end">
-              <button className="py-1 px-4 rounded bg-transparent border border-zinc-900">
+              <button className="py-1 px-4 rounded bg-transparent border border-zinc-900 mt-2">
                 {isPending ? <SubmitLoading /> : "Edit"}
               </button>
             </div>

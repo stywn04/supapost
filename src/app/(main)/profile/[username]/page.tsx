@@ -2,7 +2,7 @@ import { getCurrentUser, getUserByUsername } from "@/actions/user.action";
 import { UpdateProfileButton } from "@/components/auth";
 import { LoadingSkeleton } from "@/components/loading";
 import { UserPosts } from "@/components/user-posts";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 export async function generateMetadata({ params }: ProfilePageProps) {
@@ -26,6 +26,9 @@ export default async function SearchPage({
   const page = searchParams.page ?? 1;
   const { username } = params;
   const user = await getUserByUsername(username);
+  if (!user) {
+    return notFound();
+  }
   const { id } = await getCurrentUser();
   const isCurrentUser = id === user?.id;
   return (
