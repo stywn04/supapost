@@ -76,7 +76,8 @@ export async function getPostByIdAction(id: string) {
     .single();
 
   if (error) {
-    throw Error(error.message);
+    if (error.details === "The result contains 0 rows") return notFound();
+    throw Error(error.details);
   }
 
   if (!data) {
