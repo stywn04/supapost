@@ -3,16 +3,20 @@
 import { UpdateUserType, updateUserSchema } from "@/libs/schema/user";
 import { createClient } from "@/libs/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 
 export async function getUserByUsername(username: string) {
   const s = createClient();
-  const { data: user } = await s
+  const { error, data: user } = await s
     .from("user")
     .select("*")
     .eq("username", username)
     .limit(1)
     .single();
+  if (error) {
+    if (error.details === "The result contains 0 rows") return notFound();
+    throw Error(error.details);
+  }
 
   return user;
 }
