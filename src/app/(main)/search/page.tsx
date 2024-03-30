@@ -23,10 +23,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   }
   return (
     <main>
-      <form
-        action={searchQuery}
-        className="border border-slate-700 rounded-md "
-      >
+      <form action={searchQuery} className="border border-zinc-700 rounded-md ">
         <fieldset className="px-5 flex items-center justify-between">
           <input
             name="query"
