@@ -3,20 +3,16 @@
 import { UpdateUserType, updateUserSchema } from "@/libs/schema/user";
 import { createClient } from "@/libs/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect, notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export async function getUserByUsername(username: string) {
   const s = createClient();
-  const { error, data: user } = await s
+  const { data: user } = await s
     .from("user")
     .select("*")
     .eq("username", username)
     .limit(1)
     .single();
-  if (error) {
-    if (error.details === "The result contains 0 rows") return notFound();
-    throw Error(error.details);
-  }
 
   return user;
 }
@@ -70,9 +66,13 @@ export async function updateUserAction(fields: UpdateUserType, avatar: string) {
   if (usernameExist && currentUsername !== username) {
     return { isError: true, message: "Username already exist!" };
   }
-  const { error } = await supabase.auth.updateUser({
+  const {
+    error,
+    data: { user },
+  } = await supabase.auth.updateUser({
     data: { ...validatedFields.data, avatar },
   });
+
   const { error: updateUserError } = await supabase
     .from("user")
     .update({ ...validatedFields.data, avatar })
@@ -84,5 +84,7 @@ export async function updateUserAction(fields: UpdateUserType, avatar: string) {
   if (updateUserError) {
     return { isError: true, message: updateUserError.message };
   }
-  revalidatePath("/profile");
+
+  revalidatePath(`/profile/${user?.user_metadata.username}`);
+  redirect(`/profile/${user?.user_metadata.username}`);
 }

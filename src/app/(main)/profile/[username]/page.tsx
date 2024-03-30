@@ -26,6 +26,9 @@ export default async function SearchPage({
   const page = searchParams.page ?? 1;
   const { username } = params;
   const user = await getUserByUsername(username);
+  if (!user) {
+    return notFound();
+  }
   const { id } = await getCurrentUser();
   const isCurrentUser = id === user?.id;
   return (
